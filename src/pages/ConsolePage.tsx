@@ -184,7 +184,7 @@ export function ConsolePage() {
     client.sendUserMessageContent([
       {
         type: `input_text`,
-        text: `Hello!`,
+        text: `Hola!`,
         // text: `For testing purposes, I want you to list ten car brands. Number each item, e.g. "one (or whatever number you are one): the item name".`
       },
     ]);
@@ -249,6 +249,10 @@ export function ConsolePage() {
     const wavRecorder = wavRecorderRef.current;
     await wavRecorder.pause();
     client.createResponse();
+  };
+  const sendIdioma = async () => {
+    const client = clientRef.current;
+    client.sendUserMessageContent([{ type: 'input_text', text: `La respuesta que me diste me la puedes dar en ingles` }]);
   };
 
   /**
@@ -679,6 +683,13 @@ export function ConsolePage() {
                 onMouseUp={stopRecording}
               />
             )}
+             <div className="spacer" />
+            {isConnected && canPushToTalk && (
+              <Button
+                label={'Cambiar Idioma'}
+                onClick={sendIdioma}
+              />
+            )}
             <div className="spacer" />
             <Button
               label={isConnected ? 'disconnect' : 'connect'}
@@ -691,40 +702,7 @@ export function ConsolePage() {
             />
           </div>
         </div>
-        <div className="content-right">
-          <div className="content-block map">
-            <div className="content-block-title">get_weather()</div>
-            <div className="content-block-title bottom">
-              {marker?.location || 'not yet retrieved'}
-              {!!marker?.temperature && (
-                <>
-                  <br />
-                  🌡️ {marker.temperature.value} {marker.temperature.units}
-                </>
-              )}
-              {!!marker?.wind_speed && (
-                <>
-                  {' '}
-                  🍃 {marker.wind_speed.value} {marker.wind_speed.units}
-                </>
-              )}
-            </div>
-            <div className="content-block-body full">
-              {coords && (
-                <Map
-                  center={[coords.lat, coords.lng]}
-                  location={coords.location}
-                />
-              )}
-            </div>
-          </div>
-          <div className="content-block kv">
-            <div className="content-block-title">set_memory()</div>
-            <div className="content-block-body content-kv">
-              {JSON.stringify(memoryKv, null, 2)}
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
   );
